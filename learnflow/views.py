@@ -20,14 +20,15 @@ class UserView(MethodView):
 		data = request.get_json(force=True)
 
 		new_user = User(
-			username=data['username']
-			first_name=data['first_name']
-			last_name=data['last_name']
-			password=flask_bcrypt.generate_password_hash(data['password'],
+			username=data['username'],
+			first_name=data['first_name'],
+			last_name=data['last_name'],
+			password=flask_bcrypt.generate_password_hash(data['password']),
 			saved_tracks=[],
-			mastered_tracks=[],
+			mastered_tracks=[]
 		)
-		return "yo"
+		new_user.save()
+		return jsonify(status="success", user=new_user)
 
 
 class TrackView(MethodView):
@@ -51,7 +52,7 @@ class TrackView(MethodView):
 		new_track = Track(
 			author=author,
 			title=data['title'],
-			description=data['description']
+			description=data['description'],
 			tags=[],
 			links=[],
 			children_tracks=[],
