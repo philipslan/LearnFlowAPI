@@ -1,0 +1,7 @@
+flask-bcrypt
+flask
+Flask-Script
+mongoengine
+flask_mongoengine
+gunicorn
+flask-restful
