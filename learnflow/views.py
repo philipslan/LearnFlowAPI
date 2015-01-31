@@ -77,6 +77,16 @@ class LinkView(MethodView):
 				return jsonify(status="Link not found")
 		else:
 			return jsonify(links=Link.objects().all())
+
+	def post(self):
+		data = request.get_json(force=True)
+		author = User.objects(id=data['author_id']).first()
+		new_track = Link(
+			url= data['url'],
+			description= data['description']
+		)
+		new_link.save()
+		return jsonify(status="success", link=new_link)
 		
 
 class CommentView(MethodView):
