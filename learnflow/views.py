@@ -1,6 +1,6 @@
 from flask import Blueprint, request, redirect, render_template, url_for, jsonify
 from flask.views import MethodView
-from learnflow.models import User, Track, Comments, Link
+from learnflow.models import User, Track, Comment, Link
 from mongoengine.base import ValidationError
 
 from learnflow import flask_bcrypt
@@ -98,7 +98,7 @@ class CommentView(MethodView):
 	def get(self, comment_id):
 		if comment_id is not None:
 			try:
-				comment = Comments.objects(id=comment_id).first()
+				comment = Comment.objects(id=comment_id).first()
 				if comment:
 					return jsonify(comments=comment)
 				else:
@@ -106,8 +106,24 @@ class CommentView(MethodView):
 			except ValidationError:
 				return jsonify(status="Track not found")
 		else:
-			return jsonify(status="success", comments=Comments.objects().all())
+			return jsonify(status="success", comments=Comment.objects().all())
 
+	def post(self):
+		data = request.get_json(force=True)
+		author  = User.objects(id=data['author_id']).first()
+		track = Track.objects(id=data['track_id']).first()
+		try:
+			link = Link.objects(id=data['link_id']).first()
+		except ValidationError:
+			link = None
+		new_comment = Comment(
+			body=data['body'],
+			author=author,
+			track=track,
+			node=link
+		)
+		new_comment.save()
+		return jsonify(status="success", track=new_track)
 
 
 # Register the urls

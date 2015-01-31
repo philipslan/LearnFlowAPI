@@ -40,7 +40,7 @@ class Track(db.Document):
     completed = db.IntField(required=True)
     not_completed = db.IntField(required=True)
 
-class Comments(db.Document):
+class Comment(db.Document):
     created_at = db.DateTimeField(default=datetime.datetime.now, required=True)
     body = db.StringField(required=True)
     author = db.ReferenceField(User)
