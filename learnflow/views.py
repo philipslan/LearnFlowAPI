@@ -84,7 +84,9 @@ class LinkView(MethodView):
 class CommentView(MethodView):
 
 	def get(self, comment_id):
-		if comment_id is not
+		if comment_id is not None:
+			try:
+				
 
 
 # Register the urls
