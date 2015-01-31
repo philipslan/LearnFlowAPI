@@ -63,6 +63,23 @@ class TrackView(MethodView):
 		return jsonify(status="success", track=new_track)
 
 
+class LinkView(MethodView):
+	def get(self, link_id):
+		if link_id is not None:
+			try:
+				link= Link.objects(id=link_id).first()
+				if track:
+					return jsonify(links=link)
+				else:
+					return jsonify(status="Link not found")
+			except ValidationError:
+				return jsonify(status="Link not found")
+		else:
+			return jsonify(links=Link.objects().all())
+		
+
+
+
 # Register the urls
 user_view = UserView.as_view('user_api')
 api.add_url_rule('/users/', defaults={'user_id': None}, view_func=user_view, methods=['GET'])
@@ -76,6 +93,11 @@ api.add_url_rule('/tracks/', view_func=track_view, methods=['POST'])
 api.add_url_rule('/tracks/<track_id>', view_func=track_view, methods=['GET', 'PUT', 'DELETE'])
 
 
+# Create Links
+link_view = LinkView.as_view('link_api')
+api.add_url_rule('/link/', defaults={'link_id': None}, view_func=link_view, methods=['GET'])
+api.add_url_rule('/link/', view_func=link_view, methods=['POST'])
+api.add_url_rule('/link/<link_id>', view_func=link_view, methods=['GET','PUT','DELETE'])
 #core.add_url_rule('/update', view_func=StatusView.as_view('list'))
 #core.add_url_rule('/status/<user_id>/', view_func=UserStatusView.as_view('status'))
 #core.add_url_rule('/register', view_func=RegisterUserView.as_view('register'))
