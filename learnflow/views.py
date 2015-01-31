@@ -79,14 +79,21 @@ class LinkView(MethodView):
 			return jsonify(links=Link.objects().all())
 		
 
-
-
 class CommentView(MethodView):
 
 	def get(self, comment_id):
 		if comment_id is not None:
 			try:
-				
+				comment = Comments.objects(id=comment_id).first()
+				if comment:
+					return jsonify(comments=comment)
+				else:
+					return jsonify(status="Comment not found")
+			except ValidationError:
+				return jsonify(status="Track not found")
+		else:
+			return jsonify(status="success", comments=Comments.objects().all())
+
 
 
 # Register the urls
