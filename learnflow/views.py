@@ -80,6 +80,12 @@ class LinkView(MethodView):
 
 
 
+class CommentView(MethodView):
+
+	def get(self, comment_id):
+		if comment_id is not
+
+
 # Register the urls
 user_view = UserView.as_view('user_api')
 api.add_url_rule('/users/', defaults={'user_id': None}, view_func=user_view, methods=['GET'])
@@ -92,6 +98,10 @@ api.add_url_rule('/tracks/', defaults={'track_id': None}, view_func=track_view, 
 api.add_url_rule('/tracks/', view_func=track_view, methods=['POST'])
 api.add_url_rule('/tracks/<track_id>', view_func=track_view, methods=['GET', 'PUT', 'DELETE'])
 
+comment_view = CommentView.as_view('comment_api')
+api.add_url_rule('/comments/', defaults={'comment_id': None}, view_func=comment_view, methods=['GET'])
+api.add_url_rule('/comments/', view_func=comment_view, methods=['POST'])
+api.add_url_rule('/comments/<comment_id>', view_func=comment_view, methods=['GET', 'PUT', 'DELETE'])
 
 # Create Links
 link_view = LinkView.as_view('link_api')
