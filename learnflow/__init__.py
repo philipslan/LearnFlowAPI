@@ -5,6 +5,7 @@ from datetime import datetime
 from flask import url_for
 
 
+
 app = Flask(__name__)
 
 
@@ -16,6 +17,7 @@ app.config['MONGODB_PASSWORD'] = 'hackdat'
 app.config["SECRET_KEY"] = "secretwords"
 
 db = MongoEngine(app)
+flask_bcrypt = Bcrypt(app)
 
 def register_blueprints(app):
     # Prevents circular imports

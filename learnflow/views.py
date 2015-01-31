@@ -3,6 +3,8 @@ from flask.views import MethodView
 from learnflow.models import User, Track, Comments, Link
 from mongoengine.base import ValidationError
 
+from learnflow import flask_bcrypt
+
 api = Blueprint('api', __name__, template_folder='templates')
 
 
@@ -15,6 +17,16 @@ class UserView(MethodView):
 		return jsonify(ye='ya')
 
 	def post(self):
+		data = request.get_json(force=True)
+
+		new_user = User(
+			username=data['username']
+			first_name=data['first_name']
+			last_name=data['last_name']
+			password=flask_bcrypt.generate_password_hash(data['password'],
+			saved_tracks=[],
+			mastered_tracks=[],
+		)
 		return "yo"
 
 
@@ -31,7 +43,25 @@ class TrackView(MethodView):
 			except ValidationError:
 				return jsonify(status="Track not found")
 		else:
-			return jsonify(tracks=Track.objects().all())
+			return jsonify(status="success", tracks=Track.objects().all())
+
+	def post(self):
+		data = request.get_json(force=True)
+		author = User.objects(id=data['author_id']).first()
+		new_track = Track(
+			author=author,
+			title=data['title'],
+			description=data['description']
+			tags=[],
+			links=[],
+			children_tracks=[],
+			completed=0,
+			not_completed=0,
+			hours=data['hours']
+		)
+		new_track.save()
+		return jsonify(status="success", track=new_track)
+
 
 # Register the urls
 user_view = UserView.as_view('user_api')
