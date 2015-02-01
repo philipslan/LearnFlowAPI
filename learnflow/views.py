@@ -115,7 +115,7 @@ class CommentView(MethodView):
 			except ValidationError:
 				return jsonify(status="failure",message="Track not found")
 		else:
-			return jsonify(status="success", comments=Comment.objects().all())
+			return jsonify(status="success", comment=Comment.objects().all())
 
 	def post(self):
 		data = request.get_json(force=True)
@@ -132,15 +132,21 @@ class CommentView(MethodView):
 			node=link
 		)
 		new_comment.save()
-		return jsonify(status="success", track=new_comment)
+		return jsonify(status="success", track=new_comment, request=data)
 
+class LoginView(MethodView):
+
+	def get(self, username, password):
+		user = User.objects(username=username, hashed_pw=password).first()
+		if user:
+			return jsonify(status="success",user=user)
+		return jsonify(status="failure",message="Incorrect username or password")
 
 # Register the urls
 user_view = UserView.as_view('user_api')
 api.add_url_rule('/users/', defaults={'user_id': None}, view_func=user_view, methods=['GET'])
 api.add_url_rule('/users/', view_func=user_view, methods=['POST'])
 api.add_url_rule('/users/<user_id>', view_func=user_view, methods=['GET', 'PUT', 'DELETE'])
-
 
 track_view = TrackView.as_view('track_api')
 api.add_url_rule('/tracks/', defaults={'track_id': None}, view_func=track_view, methods=['GET'])
@@ -157,6 +163,9 @@ link_view = LinkView.as_view('link_api')
 api.add_url_rule('/links/', defaults={'link_id': None}, view_func=link_view, methods=['GET'])
 api.add_url_rule('/links/', view_func=link_view, methods=['POST'])
 api.add_url_rule('/links/<link_id>', view_func=link_view, methods=['GET','PUT','DELETE'])
+
+login_view = LoginView.as_view('login_api')
+api.add_url_rule('/login/<username>/<password>', view_func=login_view, methods=['GET'])
 
 #core.add_url_rule('/update', view_func=StatusView.as_view('list'))
 #core.add_url_rule('/status/<user_id>/', view_func=UserStatusView.as_view('status'))
