@@ -13,8 +13,18 @@ api = Blueprint('api', __name__, template_folder='templates')
 
 class UserView(MethodView):
 
-	def get(self):
-		return jsonify(ye='ya')
+	def get(self,user_id):
+		if user_id is not None:
+			try:
+				user = User.objects(id=user_id).first()
+				if user:
+					return jsonify(users=user)
+				else:
+					return jsonify(status="User not found")
+			except ValidationError:
+				return jsonify(status="User not found")
+		else:
+			return jsonify(status="success", users=User.objects().all())
 
 	def post(self):
 		data = request.get_json(force=True)
