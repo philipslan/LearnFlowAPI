@@ -93,7 +93,7 @@ class LinkView(MethodView):
 
 	def post(self):
 		data = request.get_json(force=True)
-		new_track = Link(
+		new_link = Link(
 			url= data['url'],
 			description= data['description']
 		)
@@ -123,7 +123,7 @@ class CommentView(MethodView):
 		track = Track.objects(id=data['track_id']).first()
 		try:
 			link = Link.objects(id=data['link_id']).first()
-		except ValidationError:
+		except KeyError:
 			link = None
 		new_comment = Comment(
 			body=data['body'],
@@ -132,7 +132,7 @@ class CommentView(MethodView):
 			node=link
 		)
 		new_comment.save()
-		return jsonify(status="success", track=new_track)
+		return jsonify(status="success", track=new_comment)
 
 
 # Register the urls
