@@ -20,9 +20,9 @@ class UserView(MethodView):
 				if user:
 					return jsonify(users=user)
 				else:
-					return jsonify(status="User not found")
+					return jsonify(status="failure",message="User not found")
 			except ValidationError:
-				return jsonify(status="User not found")
+				return jsonify(status="failure",message="User not found")
 		else:
 			return jsonify(status="success", users=User.objects().all())
 
@@ -40,6 +40,36 @@ class UserView(MethodView):
 		new_user.save()
 		print new_user
 		return jsonify(status="success", user=new_user)
+
+	def put(self,user_id):
+		data = request.get_json(force=True)
+		user = User.objects(id=user_id).first()
+
+
+		if user:
+			try:
+				if data['saved_tracks']:
+					for tracks in user.saved_tracks:
+						if data['saved_tracks'] == tracks:
+							user.saved_tracks.remove(tracks)
+							user.save()
+							return jsonify(status="success",message="Saved Track successfully deleted")
+					user.saved_tracks.append(data['saved_tracks'])
+					user.save()
+					return jsonify(status="success",message="Saved Track successfully added")
+			except KeyError:
+				if data['mastered_tracks']:
+					for tracks in user.mastered_tracks:
+						if data['mastered_tracks'] == tracks:
+							user.mastered_tracks.remove(data['mastered_tracks'])
+							user.save()
+							return jsonify(status="success",message="Mastered Track successfully deleted")
+					user.mastered_tracks.append(data['mastered_tracks'])
+					user.save()
+					return jsonify(status="success",message="Mastered Track successfully added")
+		else:
+			return jsonify(status="failure",message="User not found")
+
 
 
 class TrackView(MethodView):

@@ -8,8 +8,8 @@ class User(db.Document):
     first_name = db.StringField(max_length=255, required=True)
     last_name = db.StringField(max_length=255, required=True)
     hashed_pw = db.StringField(max_length=255, required=True)
-    saved_tracks = db.ListField(db.StringField)
-    mastered_tracks = db.ListField(db.StringField)
+    saved_tracks = db.ListField(db.StringField())
+    mastered_tracks = db.ListField(db.StringField())
     bio = db.StringField(max_length=1000)
     
     def __unicode__(self):
