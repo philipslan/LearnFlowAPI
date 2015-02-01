@@ -34,7 +34,7 @@ class UserView(MethodView):
 			first_name=data['first_name'],
 			last_name=data['last_name'],
 			#hashed_pw=flask_bcrypt.generate_password_hash(data['password']),
-			hashed_pw= data['password']
+			hashed_pw= data['password'],
 			saved_tracks=[],
 			mastered_tracks=[]
 		)
