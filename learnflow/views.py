@@ -10,7 +10,7 @@ api = Blueprint('api', __name__, template_folder='templates')
 
 
 
-
+#this is some change
 class UserView(MethodView):
 
 	def get(self,user_id):
@@ -33,7 +33,8 @@ class UserView(MethodView):
 			username=data['username'],
 			first_name=data['first_name'],
 			last_name=data['last_name'],
-			hashed_pw=data['password'],
+			#hashed_pw=flask_bcrypt.generate_password_hash(data['password']),
+			hashed_pw= data['password']
 			saved_tracks=[],
 			mastered_tracks=[]
 		)
