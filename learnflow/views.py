@@ -3,7 +3,7 @@ from flask.views import MethodView
 from learnflow.models import User, Track, Comment, Link
 from mongoengine.base import ValidationError
 
-from learnflow import flask_bcrypt
+# from learnflow import flask_bcrypt
 
 api = Blueprint('api', __name__, template_folder='templates')
 
@@ -33,7 +33,7 @@ class UserView(MethodView):
 			username=data['username'],
 			first_name=data['first_name'],
 			last_name=data['last_name'],
-			hashed_pw=flask_bcrypt.generate_password_hash(data['password']),
+			hashed_pw=data['password'],
 			saved_tracks=[],
 			mastered_tracks=[]
 		)
