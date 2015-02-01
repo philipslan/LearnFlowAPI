@@ -138,16 +138,17 @@ api.add_url_rule('/tracks/', defaults={'track_id': None}, view_func=track_view, 
 api.add_url_rule('/tracks/', view_func=track_view, methods=['POST'])
 api.add_url_rule('/tracks/<track_id>', view_func=track_view, methods=['GET', 'PUT', 'DELETE'])
 
-#comment_view = CommentView.as_view('comment_api')
-#api.add_url_rule('/comments/', defaults={'comment_id': None}, view_func=comment_view, methods=['GET'])
-#api.add_url_rule('/comments/', view_func=comment_view, methods=['POST'])
-#api.add_url_rule('/comments/<comment_id>', view_func=comment_view, methods=['GET', 'PUT', 'DELETE'])
+comment_view = CommentView.as_view('comment_api')
+api.add_url_rule('/comments/', defaults={'comment_id': None}, view_func=comment_view, methods=['GET'])
+api.add_url_rule('/comments/', view_func=comment_view, methods=['POST'])
+api.add_url_rule('/comments/<comment_id>', view_func=comment_view, methods=['GET', 'PUT', 'DELETE'])
 
 # Create Links
-#link_view = LinkView.as_view('link_api')
-#api.add_url_rule('/link/', defaults={'link_id': None}, view_func=link_view, methods=['GET'])
-#api.add_url_rule('/link/', view_func=link_view, methods=['POST'])
-#api.add_url_rule('/link/<link_id>', view_func=link_view, methods=['GET','PUT','DELETE'])
+link_view = LinkView.as_view('link_api')
+api.add_url_rule('/links/', defaults={'link_id': None}, view_func=link_view, methods=['GET'])
+api.add_url_rule('/links/', view_func=link_view, methods=['POST'])
+api.add_url_rule('/links/<link_id>', view_func=link_view, methods=['GET','PUT','DELETE'])
+
 #core.add_url_rule('/update', view_func=StatusView.as_view('list'))
 #core.add_url_rule('/status/<user_id>/', view_func=UserStatusView.as_view('status'))
 #core.add_url_rule('/register', view_func=RegisterUserView.as_view('register'))
