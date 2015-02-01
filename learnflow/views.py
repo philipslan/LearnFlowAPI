@@ -93,7 +93,6 @@ class LinkView(MethodView):
 
 	def post(self):
 		data = request.get_json(force=True)
-		author = User.objects(id=data['author_id']).first()
 		new_track = Link(
 			url= data['url'],
 			description= data['description']
