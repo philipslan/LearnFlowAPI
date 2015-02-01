@@ -51,9 +51,9 @@ class TrackView(MethodView):
 				if track:
 					return jsonify(tracks=track)
 				else:
-					return jsonify(status="Track not found")
+					return jsonify(status="failure",message="Track not found")
 			except ValidationError:
-				return jsonify(status="Track not found")
+				return jsonify(status="failure",message="Track not found")
 		else:
 			return jsonify(status="success", tracks=Track.objects().all())
 
@@ -84,9 +84,9 @@ class LinkView(MethodView):
 				if track:
 					return jsonify(links=link)
 				else:
-					return jsonify(status="Link not found")
+					return jsonify(status="failure",message="Link not found")
 			except ValidationError:
-				return jsonify(status="Link not found")
+				return jsonify(status="failure",message="Link not found")
 		else:
 			return jsonify(links=Link.objects().all())
 
@@ -111,9 +111,9 @@ class CommentView(MethodView):
 				if comment:
 					return jsonify(comments=comment)
 				else:
-					return jsonify(status="Comment not found")
+					return jsonify(status="failure",message="Comment not found")
 			except ValidationError:
-				return jsonify(status="Track not found")
+				return jsonify(status="failure",message="Track not found")
 		else:
 			return jsonify(status="success", comments=Comment.objects().all())
 
